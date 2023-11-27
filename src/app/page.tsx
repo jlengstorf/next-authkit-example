@@ -1,10 +1,13 @@
 import { Button, Flex, Heading, Text } from "@radix-ui/themes";
 import NextLink from "next/link";
 import { SignInButton } from "./components/sign-in-button";
-import { getUser } from "../auth";
 
 export default async function HomePage() {
-  const { isAuthenticated, user } = await getUser();
+  // TODO determine login status from AuthKit
+  const isAuthenticated = false;
+
+  // TODO load user details from AuthKit when logged in
+  const user: any = {};
 
   return (
     <Flex direction="column" align="center" gap="2">

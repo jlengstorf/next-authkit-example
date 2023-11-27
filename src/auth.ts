@@ -3,8 +3,7 @@ import { redirect } from "next/navigation";
 import WorkOS, { User } from "@workos-inc/node";
 import { jwtVerify } from "jose";
 
-// Initialize the WorkOS client
-export const workos = new WorkOS(process.env.WORKOS_API_KEY);
+// TODO Initialize the WorkOS client
 
 export function getClientId() {
   const clientId = process.env.WORKOS_CLIENT_ID;
@@ -16,22 +15,7 @@ export function getClientId() {
   return clientId;
 }
 
-export async function getAuthorizationUrl() {
-  const redirectUri = process.env.WORKOS_REDIRECT_URI;
-
-  if (!redirectUri) {
-    throw new Error("WORKOS_REDIRECT_URI is not set");
-  }
-
-  const authorizationUrl = workos.userManagement.getAuthorizationUrl({
-    provider: "authkit",
-    clientId: getClientId(),
-    // The endpoint that WorkOS will redirect to after a user authenticates
-    redirectUri,
-  });
-
-  return authorizationUrl;
-}
+// TODO get the authorization URL for logging in and signing up with AuthKit
 
 export function getJwtSecretKey() {
   const secret = process.env.JWT_SECRET_KEY;
@@ -43,34 +27,8 @@ export function getJwtSecretKey() {
   return new Uint8Array(Buffer.from(secret, "base64"));
 }
 
-export async function verifyJwtToken(token: string) {
-  try {
-    const { payload } = await jwtVerify(token, getJwtSecretKey());
+// TODO verify that the JWT is valid
 
-    return payload;
-  } catch (error) {
-    return null;
-  }
-}
+// TODO determine whether a user is authenticated and return user details if so
 
-export async function getUser(): Promise<{
-  isAuthenticated: boolean;
-  user?: User | null;
-}> {
-  const token = cookies().get("token")?.value;
-  const verifiedToken = token && (await verifyJwtToken(token));
-
-  if (verifiedToken) {
-    return {
-      isAuthenticated: true,
-      user: verifiedToken.user as User | null,
-    };
-  }
-
-  return { isAuthenticated: false };
-}
-
-export async function clearCookie() {
-  cookies().delete("token");
-  redirect("/");
-}
+// TODO log the user out by deleting their token

@@ -1,9 +1,11 @@
-import { clearCookie, getAuthorizationUrl, getUser } from "../../auth";
 import { Button, Flex } from "@radix-ui/themes";
 
 export async function SignInButton({ large }: { large?: boolean }) {
-  const { isAuthenticated } = await getUser();
-  const authorizationUrl = await getAuthorizationUrl();
+  // TODO determine login status from AuthKit
+  const isAuthenticated = false;
+
+  // TODO get AuthKit authorization URL
+  const authorizationUrl = "#login";
 
   if (isAuthenticated) {
     return (
@@ -11,7 +13,7 @@ export async function SignInButton({ large }: { large?: boolean }) {
         <form
           action={async () => {
             "use server";
-            await clearCookie();
+            // TODO log the user out
           }}
         >
           <Button type="submit" size={large ? "3" : "2"}>
